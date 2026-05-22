@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Banco de Referências</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0a0a0c;
+      --bg2: #111115;
+      --bg3: #18181e;
+      --border: rgba(255,255,255,0.07);
+      --accent: #5ab4d6;
+      --accent2: #3d8fa8;
+      --text: #e8e8f0;
+      --text2: #8888a0;
+      --text3: #555568;
+      --card-bg: #13131a;
+      --radius: 12px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Grain overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.025;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Glow top */
+    body::after {
+      content: '';
+      position: fixed;
+      top: -200px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 400px;
+      background: radial-gradient(ellipse, rgba(90,180,214,0.08) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* HEADER */
+    header {
+      position: relative;
+      z-index: 10;
+      padding: 48px 48px 32px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .header-left h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 4vw, 42px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      color: var(--text);
+    }
+
+    .header-left h1 span {
+      color: var(--accent);
+      font-style: italic;
+    }
+
+    .header-left p {
+      margin-top: 8px;
+      font-size: 13px;
+      color: var(--text3);
+      font-weight: 300;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .btn-add {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent);
+      color: #0a0a0c;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 22px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      letter-spacing: 0.02em;
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+
+    .btn-add:hover {
+      background: #72c9e8;
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(90,180,214,0.25);
+    }
+
+    /* FILTERS */
+    .filters-bar {
+      position: relative;
+      z-index: 10;
+      padding: 20px 48px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .filter-label {
+      font-size: 11px;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-right: 4px;
+      font-weight: 500;
+    }
+
+    .filter-chip {
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text2);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+
+    .filter-chip:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .filter-chip.active {
+      background: rgba(90,180,214,0.12);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* SEARCH */
+    .search-wrap {
+      position: relative;
+      z-index: 10;
+      padding: 20px 48px 0;
+    }
+
+    .search-input {
+      width: 100%;
+      max-width: 400px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 16px 10px 40px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 13px;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .search-input::placeholder { color: var(--text3); }
+    .search-input:focus { border-color: var(--accent); }
+
+    .search-icon {
+      position: absolute;
+      left: 61px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text3);
+      pointer-events: none;
+    }
+
+    /* GRID */
+    .grid-container {
+      position: relative;
+      z-index: 10;
+      padding: 28px 48px 80px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      transition: all 0.2s;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      animation: fadeIn 0.4s ease both;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), transparent);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .card:hover {
+      border-color: rgba(90,180,214,0.2);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.3);
+    }
+
+    .card:hover::before { opacity: 1; }
+
+    .card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .card-tipo {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 500;
+    }
+
+    .card-categoria {
+      font-size: 10px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      background: rgba(90,180,214,0.1);
+      color: var(--accent);
+      border: 1px solid rgba(90,180,214,0.2);
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+
+    .card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 1.3;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+
+    .card-desc {
+      font-size: 12px;
+      color: var(--text2);
+      line-height: 1.6;
+      font-weight: 300;
+      margin-bottom: 14px;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+    }
+
+    .card-tags {
+      display: flex;
+      gap: 5px;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      font-size: 10px;
+      color: var(--text3);
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: var(--bg3);
+      font-weight: 500;
+    }
+
+    .card-link {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 500;
+      opacity: 0.7;
+      transition: opacity 0.15s;
+    }
+
+    .card-link:hover { opacity: 1; }
+
+    /* EMPTY STATE */
+    .empty-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 80px 24px;
+      color: var(--text3);
+    }
+
+    .empty-state p {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-style: italic;
+      margin-bottom: 8px;
+      color: var(--text2);
+    }
+
+    .empty-state span {
+      font-size: 12px;
+      color: var(--text3);
+    }
+
+    /* LOADING */
+    .loading {
+      grid-column: 1 / -1;
+      display: flex;
+      justify-content: center;
+      padding: 60px;
+    }
+
+    .spinner {
+      width: 32px;
+      height: 32px;
+      border: 2px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* COUNTER */
+    .count-badge {
+      font-size: 11px;
+      color: var(--text3);
+      padding: 20px 48px 0;
+      position: relative;
+      z-index: 10;
+      font-weight: 400;
+    }
+
+    .count-badge strong {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    /* MODAL */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(8px);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+    }
+
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .modal {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      width: 100%;
+      max-width: 520px;
+      transform: translateY(16px);
+      transition: transform 0.25s;
+      position: relative;
+    }
+
+    .modal-overlay.open .modal {
+      transform: translateY(0);
+    }
+
+    .modal h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .modal h2 span { color: var(--accent); font-style: italic; }
+
+    .modal-subtitle {
+      font-size: 12px;
+      color: var(--text3);
+      margin-bottom: 28px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 7px;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 13px;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input::placeholder, textarea::placeholder { color: var(--text3); }
+    input:focus, textarea:focus, select:focus { border-color: var(--accent); }
+
+    textarea { resize: vertical; min-height: 80px; }
+
+    select option { background: var(--bg3); color: var(--text); }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 24px;
+      justify-content: flex-end;
+    }
+
+    .btn-cancel {
+      padding: 10px 20px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text2);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .btn-cancel:hover { border-color: var(--text2); color: var(--text); }
+
+    .btn-save {
+      padding: 10px 24px;
+      border-radius: 8px;
+      border: none;
+      background: var(--accent);
+      color: #0a0a0c;
+      font-family: 'Plus Jakarta Sons', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-save:hover { background: #72c9e8; }
+    .btn-save:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .btn-close-modal {
+      position: absolute;
+      top: 16px; right: 16px;
+      background: transparent;
+      border: none;
+      color: var(--text3);
+      font-size: 20px;
+      cursor: pointer;
+      line-height: 1;
+      padding: 4px;
+      transition: color 0.15s;
+    }
+
+    .btn-close-modal:hover { color: var(--text); }
+
+    /* TOAST */
+    .toast {
+      position: fixed;
+      bottom: 32px;
+      right: 32px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 8px;
+      padding: 14px 20px;
+      font-size: 13px;
+      color: var(--text);
+      z-index: 200;
+      transform: translateY(16px);
+      opacity: 0;
+      transition: all 0.3s;
+      pointer-events: none;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      header { padding: 28px 20px 20px; flex-direction: column; align-items: flex-start; }
+      .filters-bar { padding: 14px 20px; }
+      .search-wrap { padding: 16px 20px 0; }
+      .search-icon { left: 33px; }
+      .grid-container { padding: 20px 20px 60px; grid-template-columns: 1fr; }
+      .count-badge { padding: 16px 20px 0; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-left">
+      <h1>Banco de <span>Referências</span></h1>
+      <p>Coleção pessoal · Lucas · iCasas</p>
+    </div>
+    <button class="btn-add" onclick="openModal()">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      Nova referência
+    </button>
+  </header>
+
+  <div class="search-wrap">
+    <svg class="search-icon" width="14" height="14" viewBox="0 0 14 14" fill="none">
+      <circle cx="6" cy="6" r="4.5" stroke="#555568" stroke-width="1.5"/>
+      <path d="M10 10l2.5 2.5" stroke="#555568" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+    <input class="search-input" type="text" placeholder="Buscar referência..." id="searchInput" oninput="filterCards()" />
+  </div>
+
+  <div class="filters-bar" id="filtersBar">
+    <span class="filter-label">filtrar:</span>
+    <button class="filter-chip active" data-cat="all" onclick="setFilter('all', this)">Todas</button>
+  </div>
+
+  <div class="count-badge" id="countBadge"></div>
+
+  <div class="grid-container" id="grid">
+    <div class="loading"><div class="spinner"></div></div>
+  </div>
+
+  <!-- MODAL -->
+  <div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
+    <div class="modal">
+      <button class="btn-close-modal" onclick="closeModal()">✕</button>
+      <h2>Nova <span>Referência</span></h2>
+      <p class="modal-subtitle">Adicione um link, vídeo, artigo ou qualquer referência ao seu banco.</p>
+
+      <div class="form-group">
+        <label>Título *</label>
+        <input type="text" id="fTitulo" placeholder="Ex: Referência Match Cut — Estilo Adidas" />
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Tipo</label>
+          <select id="fTipo">
+            <option value="🎥 Vídeo">🎥 Vídeo</option>
+            <option value="📄 Artigo">📄 Artigo</option>
+            <option value="📚 Livro">📚 Livro</option>
+            <option value="🔗 Link">🔗 Link</option>
+            <option value="🛠 Ferramenta">🛠 Ferramenta</option>
+            <option value="🎙 Podcast">🎙 Podcast</option>
+            <option value="📊 Relatório">📊 Relatório</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Categoria</label>
+          <select id="fCategoria">
+            <option value="">Selecionar...</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>URL</label>
+        <input type="url" id="fURL" placeholder="https://..." />
+      </div>
+
+      <div class="form-group">
+        <label>Descrição</label>
+        <textarea id="fDescricao" placeholder="O que chamou atenção nessa referência..."></textarea>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+        <button class="btn-save" id="btnSave" onclick="salvarReferencia()">Salvar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const SUPABASE_URL = 'https://jzaeywnwjnbrjddyqlvt.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp6YWV5d253am5icmpkZHlxbHZ0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk0NTk3NzgsImV4cCI6MjA5NTAzNTc3OH0.aeNdHkSp_C0I-WrpvInRCHCaGYsNJcqLHOqOWKvu4sQ';
+    const TABLE = 'referencias';
+
+    const CATEGORIAS = [
+      'IA / Automação', 'Produto', 'Design Gráfico', 'Ux/Ui',
+      'Ideias Video', 'Edição', 'Adobe Photoshop', 'Adobe After Effects',
+      'Adobe Premiere', 'Adobe Illustrator', 'Prompts Imagens', 'Prompts Vídeo'
+    ];
+
+    let allRefs = [];
+    let activeFilter = 'all';
+
+    async function supabaseFetch(path, opts = {}) {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
+        headers: {
+          'apikey': SUPABASE_KEY,
+          'Authorization': `Bearer ${SUPABASE_KEY}`,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=representation',
+          ...opts.headers
+        },
+        ...opts
+      });
+      if (!res.ok) throw new Error(await res.text());
+      const text = await res.text();
+      return text ? JSON.parse(text) : null;
+    }
+
+    async function garantirTabela() {
+      try {
+        await supabaseFetch(`${TABLE}?limit=1`);
+      } catch (e) {
+        // Tabela não existe, criar via RPC não está disponível sem service_role
+        // A tabela precisa ser criada no painel do Supabase
+      }
+    }
+
+    async function carregarRefs() {
+      try {
+        const data = await supabaseFetch(`${TABLE}?select=*&order=created_at.desc`);
+        allRefs = data || [];
+        renderGrid(allRefs);
+        buildFilters(allRefs);
+      } catch (e) {
+        document.getElementById('grid').innerHTML = `
+          <div class="empty-state">
+            <p>Nenhuma tabela encontrada</p>
+            <span>Crie a tabela "referencias" no Supabase para começar</span>
+          </div>`;
+        console.error(e);
+      }
+    }
+
+    function buildFilters(refs) {
+      const cats = [...new Set(refs.map(r => r.categoria).filter(Boolean))].sort();
+      const bar = document.getElementById('filtersBar');
+      bar.innerHTML = `<span class="filter-label">filtrar:</span>
+        <button class="filter-chip ${activeFilter === 'all' ? 'active' : ''}" data-cat="all" onclick="setFilter('all', this)">Todas</button>
+        ${cats.map(c => `<button class="filter-chip ${activeFilter === c ? 'active' : ''}" data-cat="${c}" onclick="setFilter('${c}', this)">${c}</button>`).join('')}`;
+
+      // Categoria select no modal
+      const sel = document.getElementById('fCategoria');
+      sel.innerHTML = '<option value="">Selecionar...</option>' +
+        CATEGORIAS.map(c => `<option value="${c}">${c}</option>`).join('');
+    }
+
+    function setFilter(cat, btn) {
+      activeFilter = cat;
+      document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+      btn.classList.add('active');
+      filterCards();
+    }
+
+    function filterCards() {
+      const q = document.getElementById('searchInput').value.toLowerCase();
+      let filtered = allRefs;
+      if (activeFilter !== 'all') filtered = filtered.filter(r => r.categoria === activeFilter);
+      if (q) filtered = filtered.filter(r =>
+        (r.titulo || '').toLowerCase().includes(q) ||
+        (r.descricao || '').toLowerCase().includes(q) ||
+        (r.categoria || '').toLowerCase().includes(q)
+      );
+      renderGrid(filtered);
+    }
+
+    function renderGrid(refs) {
+      const grid = document.getElementById('grid');
+      const badge = document.getElementById('countBadge');
+
+      badge.innerHTML = `<strong>${refs.length}</strong> referência${refs.length !== 1 ? 's' : ''}${activeFilter !== 'all' ? ` em <strong>${activeFilter}</strong>` : ''}`;
+
+      if (!refs.length) {
+        grid.innerHTML = `<div class="empty-state"><p>Nenhuma referência encontrada</p><span>Tente outro filtro ou adicione uma nova</span></div>`;
+        return;
+      }
+
+      grid.innerHTML = refs.map((r, i) => `
+        <div class="card" style="animation-delay:${i * 0.04}s">
+          <div class="card-header">
+            <span class="card-tipo">${r.tipo || '🔗 Link'}</span>
+            ${r.categoria ? `<span class="card-categoria">${r.categoria}</span>` : ''}
+          </div>
+          <div class="card-title">${r.titulo || 'Sem título'}</div>
+          ${r.descricao ? `<div class="card-desc">${r.descricao}</div>` : ''}
+          <div class="card-footer">
+            <div class="card-tags">
+              ${(r.tags || []).map(t => `<span class="tag">${t}</span>`).join('')}
+            </div>
+            ${r.url ? `<a class="card-link" href="${r.url}" target="_blank" rel="noopener">
+              <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M1 10L10 1M10 1H4M10 1v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Ver link
+            </a>` : ''}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function openModal() {
+      document.getElementById('modalOverlay').classList.add('open');
+      document.getElementById('fTitulo').focus();
+    }
+
+    function closeModal() {
+      document.getElementById('modalOverlay').classList.remove('open');
+      document.getElementById('fTitulo').value = '';
+      document.getElementById('fURL').value = '';
+      document.getElementById('fDescricao').value = '';
+      document.getElementById('fTipo').value = '🎥 Vídeo';
+      document.getElementById('fCategoria').value = '';
+    }
+
+    function handleOverlayClick(e) {
+      if (e.target === document.getElementById('modalOverlay')) closeModal();
+    }
+
+    async function salvarReferencia() {
+      const titulo = document.getElementById('fTitulo').value.trim();
+      if (!titulo) { showToast('Preencha o título'); return; }
+
+      const payload = {
+        titulo,
+        tipo: document.getElementById('fTipo').value,
+        categoria: document.getElementById('fCategoria').value || null,
+        url: document.getElementById('fURL').value.trim() || null,
+        descricao: document.getElementById('fDescricao').value.trim() || null,
+        tags: []
+      };
+
+      const btn = document.getElementById('btnSave');
+      btn.disabled = true;
+      btn.textContent = 'Salvando...';
+
+      try {
+        const data = await supabaseFetch(TABLE, {
+          method: 'POST',
+          body: JSON.stringify(payload)
+        });
+        allRefs.unshift(Array.isArray(data) ? data[0] : data);
+        buildFilters(allRefs);
+        filterCards();
+        closeModal();
+        showToast('✓ Referência adicionada!');
+      } catch (e) {
+        showToast('Erro ao salvar. Verifique o console.');
+        console.error(e);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Salvar';
+      }
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    // Keyboard shortcut
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeModal();
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); openModal(); }
+    });
+
+    // Init
+    carregarRefs();
+  </script>
+</body>
+</html>
