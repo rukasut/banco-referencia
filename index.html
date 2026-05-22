@@ -7,248 +7,131 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg: #0a0a0c;
-      --bg2: #111115;
-      --bg3: #18181e;
-      --border: rgba(255,255,255,0.07);
-      --accent: #5ab4d6;
-      --text: #e8e8f0;
-      --text2: #8888a0;
-      --text3: #555568;
-      --card-bg: #13131a;
-      --radius: 12px;
+      --bg: #0a0a0c; --bg2: #111115; --bg3: #18181e;
+      --border: rgba(255,255,255,0.07); --accent: #5ab4d6;
+      --text: #e8e8f0; --text2: #8888a0; --text3: #555568;
+      --card-bg: #13131a; --radius: 12px;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
-      opacity: 0.025;
-      pointer-events: none;
-      z-index: 0;
-    }
-    body::after {
-      content: '';
-      position: fixed;
-      top: -200px; left: 50%;
-      transform: translateX(-50%);
-      width: 600px; height: 400px;
-      background: radial-gradient(ellipse, rgba(90,180,214,0.08) 0%, transparent 70%);
-      pointer-events: none;
-      z-index: 0;
-    }
+    body { background: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; min-height: 100vh; overflow-x: hidden; }
+    body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E"); opacity: 0.025; pointer-events: none; z-index: 0; }
+    body::after { content: ''; position: fixed; top: -200px; left: 50%; transform: translateX(-50%); width: 600px; height: 400px; background: radial-gradient(ellipse, rgba(90,180,214,0.08) 0%, transparent 70%); pointer-events: none; z-index: 0; }
 
     /* HEADER */
-    header {
-      position: relative; z-index: 10;
-      padding: 48px 48px 32px;
-      border-bottom: 1px solid var(--border);
-      display: flex; align-items: flex-end;
-      justify-content: space-between; gap: 24px;
-    }
-    .header-left h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(28px, 4vw, 42px);
-      font-weight: 700; letter-spacing: -0.02em; line-height: 1;
-    }
+    header { position: relative; z-index: 10; padding: 40px 48px 28px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+    .header-left h1 { font-family: 'Playfair Display', serif; font-size: clamp(24px, 3.5vw, 38px); font-weight: 700; letter-spacing: -0.02em; line-height: 1; }
     .header-left h1 span { color: var(--accent); font-style: italic; }
-    .btn-add {
-      display: flex; align-items: center; gap: 8px;
-      background: var(--accent); color: #0a0a0c;
-      border: none; border-radius: 8px;
-      padding: 12px 22px;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 13px; font-weight: 600;
-      cursor: pointer; letter-spacing: 0.02em;
-      transition: all 0.2s; flex-shrink: 0;
-    }
-    .btn-add:hover {
-      background: #72c9e8;
-      transform: translateY(-1px);
-      box-shadow: 0 8px 24px rgba(90,180,214,0.25);
-    }
+    .header-actions { display: flex; gap: 10px; align-items: center; }
 
-    /* FILTERS */
-    .filters-bar {
-      position: relative; z-index: 10;
-      padding: 20px 48px;
-      border-bottom: 1px solid var(--border);
-      display: flex; gap: 8px; flex-wrap: wrap; align-items: center;
-    }
-    .filter-label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.1em; margin-right: 4px; font-weight: 500; }
-    .filter-chip {
-      padding: 6px 14px; border-radius: 20px;
-      border: 1px solid var(--border); background: transparent;
-      color: var(--text2); font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 12px; font-weight: 500; cursor: pointer;
-      transition: all 0.15s; white-space: nowrap;
-    }
-    .filter-chip:hover { border-color: var(--accent); color: var(--accent); }
-    .filter-chip.active { background: rgba(90,180,214,0.12); border-color: var(--accent); color: var(--accent); }
+    /* BOTÕES */
+    .btn-add { display: flex; align-items: center; gap: 8px; background: var(--accent); color: #0a0a0c; border: none; border-radius: 8px; padding: 10px 18px; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+    .btn-add:hover { background: #72c9e8; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(90,180,214,0.25); }
+    .btn-view { display: flex; align-items: center; gap: 6px; background: var(--bg3); color: var(--text2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 12px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+    .btn-view:hover { border-color: var(--accent); color: var(--accent); }
+    .btn-view.active { border-color: var(--accent); color: var(--accent); background: rgba(90,180,214,0.08); }
 
-    /* SEARCH */
-    .search-wrap { position: relative; z-index: 10; padding: 20px 48px 0; }
-    .search-input {
-      width: 100%; max-width: 400px;
-      background: var(--bg3); border: 1px solid var(--border);
-      border-radius: 8px; padding: 10px 16px 10px 40px;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 13px; color: var(--text); outline: none;
-      transition: border-color 0.2s;
-    }
+    /* TOOLBAR */
+    .toolbar { position: relative; z-index: 10; padding: 16px 48px; border-bottom: 1px solid var(--border); display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+    .search-wrap { position: relative; flex: 1; min-width: 200px; max-width: 360px; }
+    .search-input { width: 100%; background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 9px 14px 9px 36px; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px; color: var(--text); outline: none; transition: border-color 0.2s; }
     .search-input::placeholder { color: var(--text3); }
     .search-input:focus { border-color: var(--accent); }
-    .search-icon { position: absolute; left: 61px; top: 50%; transform: translateY(-50%); color: var(--text3); pointer-events: none; }
+    .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text3); pointer-events: none; }
+    .view-toggle { display: flex; gap: 4px; background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 4px; }
+    .toggle-btn { width: 32px; height: 28px; display: flex; align-items: center; justify-content: center; border: none; background: transparent; color: var(--text3); cursor: pointer; border-radius: 5px; transition: all 0.15s; }
+    .toggle-btn.active { background: var(--bg2); color: var(--accent); }
+    .toggle-btn:hover:not(.active) { color: var(--text); }
 
     /* COUNT */
-    .count-badge { font-size: 11px; color: var(--text3); padding: 20px 48px 0; position: relative; z-index: 10; }
-    .count-badge strong { color: var(--accent); font-weight: 600; }
+    .count-info { font-size: 11px; color: var(--text3); margin-left: auto; white-space: nowrap; }
+    .count-info strong { color: var(--accent); }
 
-    /* GRID */
-    .grid-container {
-      position: relative; z-index: 10;
-      padding: 28px 48px 80px;
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 16px;
-    }
+    /* CONTEÚDO PRINCIPAL */
+    .main { position: relative; z-index: 10; padding: 28px 48px 80px; }
+
+    /* MODO: CATEGORIAS (padrão) */
+    .category-section { margin-bottom: 48px; }
+    .category-header { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+    .category-title { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 600; color: var(--text); }
+    .category-count { font-size: 11px; color: var(--text3); background: var(--bg3); padding: 3px 10px; border-radius: 20px; font-weight: 500; }
+    .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+
+    /* MODO: LISTA */
+    .list-view .cards-grid { display: flex; flex-direction: column; gap: 8px; }
+    .list-view .card { flex-direction: row; align-items: stretch; }
+    .list-view .card-image-wrap, .list-view .card-image-placeholder { width: 120px; min-width: 120px; height: auto; border-radius: 0; border-bottom: none; border-right: 1px solid var(--border); }
+    .list-view .card-image-wrap img { height: 100%; width: 120px; min-height: 80px; }
+    .list-view .card-body { padding: 12px 16px; }
+    .list-view .card-title { font-size: 14px; margin-bottom: 4px; }
+    .list-view .card-desc { display: none; }
+
+    /* MODO: COMPACTO */
+    .compact-view .cards-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
+    .compact-view .card-image-wrap, .compact-view .card-image-placeholder { height: 110px; }
+    .compact-view .card-image-wrap img { height: 110px; }
+    .compact-view .card-desc { display: none; }
+    .compact-view .card-title { font-size: 13px; }
 
     /* CARD */
-    .card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      overflow: hidden;
-      transition: all 0.2s;
-      position: relative;
-      animation: fadeIn 0.4s ease both;
-      display: flex; flex-direction: column;
-    }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
-    .card::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, var(--accent), transparent);
-      opacity: 0; transition: opacity 0.2s;
-    }
+    .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; transition: all 0.2s; position: relative; display: flex; flex-direction: column; animation: fadeIn 0.35s ease both; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--accent), transparent); opacity: 0; transition: opacity 0.2s; z-index: 1; }
     .card:hover { border-color: rgba(90,180,214,0.2); transform: translateY(-2px); box-shadow: 0 12px 32px rgba(0,0,0,0.3); }
     .card:hover::before { opacity: 1; }
 
     /* CARD IMAGE */
-    .card-image {
-      width: 100%; height: 160px;
-      object-fit: cover; display: block;
-      background: var(--bg3);
-    }
-    .card-image-placeholder {
-      width: 100%; height: 160px;
-      background: var(--bg3);
-      display: flex; align-items: center; justify-content: center;
-      color: var(--text3); font-size: 11px;
-      border-bottom: 1px solid var(--border);
-      cursor: pointer; transition: background 0.15s;
-      flex-direction: column; gap: 6px;
-    }
-    .card-image-placeholder:hover { background: #1e1e28; color: var(--accent); }
-    .card-image-placeholder svg { opacity: 0.4; }
-    .card-image-placeholder:hover svg { opacity: 0.7; }
     .card-image-wrap { position: relative; }
     .card-image-wrap img { width: 100%; height: 160px; object-fit: cover; display: block; }
-    .card-image-change {
-      position: absolute; inset: 0;
-      background: rgba(0,0,0,0.5);
-      display: flex; align-items: center; justify-content: center;
-      opacity: 0; transition: opacity 0.2s; cursor: pointer;
-      color: white; font-size: 12px; gap: 6px;
-    }
+    .card-image-change { position: absolute; inset: 0; background: rgba(0,0,0,0.55); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.2s; cursor: pointer; color: white; font-size: 12px; gap: 6px; font-family: 'Plus Jakarta Sans', sans-serif; }
     .card-image-wrap:hover .card-image-change { opacity: 1; }
+    .card-image-placeholder { width: 100%; height: 160px; background: var(--bg3); display: flex; align-items: center; justify-content: center; color: var(--text3); font-size: 11px; border-bottom: 1px solid var(--border); cursor: pointer; transition: background 0.15s; flex-direction: column; gap: 6px; }
+    .card-image-placeholder:hover { background: #1e1e28; color: var(--accent); }
 
     /* CARD BODY */
-    .card-body { padding: 16px 18px 14px; flex: 1; display: flex; flex-direction: column; }
-    .card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
-    .card-tipo { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 500; }
-    .card-categoria {
-      font-size: 10px; padding: 3px 10px; border-radius: 20px;
-      background: rgba(90,180,214,0.1); color: var(--accent);
-      border: 1px solid rgba(90,180,214,0.2);
-      font-weight: 600; letter-spacing: 0.04em; white-space: nowrap;
-    }
-    .card-title { font-family: 'Playfair Display', serif; font-size: 15px; font-weight: 600; line-height: 1.3; color: var(--text); margin-bottom: 8px; }
-    .card-desc { font-size: 12px; color: var(--text2); line-height: 1.6; font-weight: 300; margin-bottom: 12px; flex: 1; }
-    .card-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 10px; border-top: 1px solid var(--border); }
-    .card-actions { display: flex; gap: 8px; align-items: center; }
+    .card-body { padding: 14px 16px 12px; flex: 1; display: flex; flex-direction: column; }
+    .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+    .card-tipo { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 500; }
+    .card-cat-badge { font-size: 10px; padding: 2px 8px; border-radius: 20px; background: rgba(90,180,214,0.1); color: var(--accent); border: 1px solid rgba(90,180,214,0.2); font-weight: 600; white-space: nowrap; }
+    .card-title { font-family: 'Playfair Display', serif; font-size: 14px; font-weight: 600; line-height: 1.35; color: var(--text); margin-bottom: 8px; }
+    .card-desc { font-size: 12px; color: var(--text2); line-height: 1.6; font-weight: 300; flex: 1; margin-bottom: 10px; }
+    .card-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 10px; border-top: 1px solid var(--border); margin-top: auto; }
+    .btn-edit { display: flex; align-items: center; gap: 4px; font-size: 11px; color: var(--text3); background: transparent; border: none; cursor: pointer; font-family: 'Plus Jakarta Sans', sans-serif; padding: 0; transition: color 0.15s; }
+    .btn-edit:hover { color: var(--text); }
     .card-link { display: flex; align-items: center; gap: 4px; font-size: 11px; color: var(--accent); text-decoration: none; font-weight: 500; opacity: 0.7; transition: opacity 0.15s; }
     .card-link:hover { opacity: 1; }
-    .btn-edit {
-      display: flex; align-items: center; gap: 4px;
-      font-size: 11px; color: var(--text3);
-      background: transparent; border: none;
-      cursor: pointer; font-family: 'Plus Jakarta Sans', sans-serif;
-      padding: 0; transition: color 0.15s;
-    }
-    .btn-edit:hover { color: var(--text); }
 
-    /* EMPTY / LOADING */
-    .empty-state { grid-column: 1 / -1; text-align: center; padding: 80px 24px; color: var(--text3); }
-    .empty-state p { font-family: 'Playfair Display', serif; font-size: 18px; font-style: italic; margin-bottom: 8px; color: var(--text2); }
-    .loading { grid-column: 1 / -1; display: flex; justify-content: center; padding: 60px; }
+    /* EMPTY */
+    .empty-cat { padding: 32px; text-align: center; color: var(--text3); font-size: 13px; border: 1px dashed var(--border); border-radius: var(--radius); }
+    .empty-main { text-align: center; padding: 80px 24px; }
+    .empty-main p { font-family: 'Playfair Display', serif; font-size: 20px; font-style: italic; color: var(--text2); margin-bottom: 8px; }
+    .empty-main span { font-size: 13px; color: var(--text3); }
+
+    /* LOADING */
+    .loading { display: flex; justify-content: center; padding: 80px; }
     .spinner { width: 32px; height: 32px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
     /* MODAL */
-    .modal-overlay {
-      position: fixed; inset: 0;
-      background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
-      z-index: 100; display: flex; align-items: center; justify-content: center;
-      padding: 24px; opacity: 0; pointer-events: none; transition: opacity 0.2s;
-    }
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 24px; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
     .modal-overlay.open { opacity: 1; pointer-events: all; }
-    .modal {
-      background: var(--bg2); border: 1px solid var(--border);
-      border-radius: 16px; padding: 32px;
-      width: 100%; max-width: 540px;
-      transform: translateY(16px); transition: transform 0.25s;
-      position: relative; max-height: 90vh; overflow-y: auto;
-    }
+    .modal { background: var(--bg2); border: 1px solid var(--border); border-radius: 16px; padding: 32px; width: 100%; max-width: 540px; transform: translateY(16px); transition: transform 0.25s; position: relative; max-height: 90vh; overflow-y: auto; }
     .modal-overlay.open .modal { transform: translateY(0); }
     .modal h2 { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; margin-bottom: 6px; }
     .modal h2 span { color: var(--accent); font-style: italic; }
     .modal-subtitle { font-size: 12px; color: var(--text3); margin-bottom: 24px; }
     .form-group { margin-bottom: 16px; }
     label { display: block; font-size: 11px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 7px; }
-    input[type="text"], input[type="url"], textarea, select {
-      width: 100%; background: var(--bg3);
-      border: 1px solid var(--border); border-radius: 8px;
-      padding: 10px 14px; font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 13px; color: var(--text); outline: none;
-      transition: border-color 0.2s;
-    }
+    input[type="text"], input[type="url"], textarea, select { width: 100%; background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px; color: var(--text); outline: none; transition: border-color 0.2s; }
     input::placeholder, textarea::placeholder { color: var(--text3); }
     input:focus, textarea:focus, select:focus { border-color: var(--accent); }
     textarea { resize: vertical; min-height: 80px; }
-    select option { background: var(--bg3); color: var(--text); }
+    select option { background: var(--bg3); }
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-
-    /* IMAGE UPLOAD IN MODAL */
-    .image-upload-area {
-      border: 1px dashed var(--border); border-radius: 8px;
-      padding: 20px; text-align: center; cursor: pointer;
-      transition: all 0.2s; position: relative; overflow: hidden;
-    }
+    .image-upload-area { border: 1px dashed var(--border); border-radius: 8px; padding: 18px; text-align: center; cursor: pointer; transition: all 0.2s; position: relative; overflow: hidden; }
     .image-upload-area:hover { border-color: var(--accent); background: rgba(90,180,214,0.04); }
     .image-upload-area input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
     .image-upload-area p { font-size: 12px; color: var(--text3); margin-top: 6px; }
-    .image-upload-area .upload-icon { color: var(--text3); margin-bottom: 4px; }
-    .image-preview-modal { width: 100%; height: 140px; object-fit: cover; border-radius: 6px; margin-top: 10px; display: none; }
-
+    .image-preview-modal { width: 100%; height: 130px; object-fit: cover; border-radius: 6px; margin-top: 10px; display: none; }
     .modal-actions { display: flex; gap: 10px; margin-top: 24px; justify-content: space-between; align-items: center; }
     .modal-actions-right { display: flex; gap: 10px; }
     .btn-cancel { padding: 10px 20px; border-radius: 8px; border: 1px solid var(--border); background: transparent; color: var(--text2); font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px; cursor: pointer; transition: all 0.15s; }
@@ -257,8 +140,8 @@
     .btn-save:hover { background: #72c9e8; }
     .btn-save:disabled { opacity: 0.5; cursor: not-allowed; }
     .btn-delete { padding: 10px 16px; border-radius: 8px; border: 1px solid rgba(255,80,80,0.2); background: transparent; color: rgba(255,100,100,0.7); font-family: 'Plus Jakarta Sans', sans-serif; font-size: 12px; cursor: pointer; transition: all 0.15s; }
-    .btn-delete:hover { border-color: rgba(255,80,80,0.5); color: rgb(255,100,100); background: rgba(255,80,80,0.05); }
-    .btn-close-modal { position: absolute; top: 16px; right: 16px; background: transparent; border: none; color: var(--text3); font-size: 20px; cursor: pointer; line-height: 1; padding: 4px; transition: color 0.15s; }
+    .btn-delete:hover { border-color: rgba(255,80,80,0.5); color: rgb(255,100,100); }
+    .btn-close-modal { position: absolute; top: 16px; right: 16px; background: transparent; border: none; color: var(--text3); font-size: 20px; cursor: pointer; padding: 4px; transition: color 0.15s; }
     .btn-close-modal:hover { color: var(--text); }
 
     /* TOAST */
@@ -266,13 +149,9 @@
     .toast.show { transform: translateY(0); opacity: 1; }
 
     @media (max-width: 768px) {
-      header { padding: 28px 20px 20px; flex-direction: column; align-items: flex-start; }
-      .filters-bar { padding: 14px 20px; }
-      .search-wrap { padding: 16px 20px 0; }
-      .search-icon { left: 33px; }
-      .grid-container { padding: 20px 20px 60px; grid-template-columns: 1fr; }
-      .count-badge { padding: 16px 20px 0; }
+      header, .toolbar, .main { padding-left: 20px; padding-right: 20px; }
       .form-row { grid-template-columns: 1fr; }
+      .cards-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -282,42 +161,75 @@
   <div class="header-left">
     <h1>Banco de <span>Referências</span></h1>
   </div>
-  <button class="btn-add" onclick="openModal()">
-    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-    Nova referência
-  </button>
+  <div class="header-actions">
+    <button class="btn-add" onclick="openModal()">
+      <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      Nova referência
+    </button>
+  </div>
 </header>
 
-<div class="search-wrap">
-  <svg class="search-icon" width="14" height="14" viewBox="0 0 14 14" fill="none">
-    <circle cx="6" cy="6" r="4.5" stroke="#555568" stroke-width="1.5"/>
-    <path d="M10 10l2.5 2.5" stroke="#555568" stroke-width="1.5" stroke-linecap="round"/>
-  </svg>
-  <input class="search-input" type="text" placeholder="Buscar referência..." id="searchInput" oninput="filterCards()" />
+<div class="toolbar">
+  <div class="search-wrap">
+    <svg class="search-icon" width="13" height="13" viewBox="0 0 14 14" fill="none">
+      <circle cx="6" cy="6" r="4.5" stroke="#555568" stroke-width="1.5"/>
+      <path d="M10 10l2.5 2.5" stroke="#555568" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+    <input class="search-input" type="text" placeholder="Buscar..." id="searchInput" oninput="renderAll()" />
+  </div>
+
+  <!-- Toggle de visualização -->
+  <div class="view-toggle">
+    <!-- Categorias -->
+    <button class="toggle-btn active" id="viewCat" title="Por categorias" onclick="setView('category')">
+      <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+        <rect x="1" y="1" width="5" height="5" rx="1" fill="currentColor"/>
+        <rect x="9" y="1" width="5" height="5" rx="1" fill="currentColor"/>
+        <rect x="1" y="9" width="5" height="5" rx="1" fill="currentColor"/>
+        <rect x="9" y="9" width="5" height="5" rx="1" fill="currentColor"/>
+      </svg>
+    </button>
+    <!-- Grid compacto -->
+    <button class="toggle-btn" id="viewCompact" title="Grade compacta" onclick="setView('compact')">
+      <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+        <rect x="1" y="1" width="3" height="3" rx="0.5" fill="currentColor"/>
+        <rect x="6" y="1" width="3" height="3" rx="0.5" fill="currentColor"/>
+        <rect x="11" y="1" width="3" height="3" rx="0.5" fill="currentColor"/>
+        <rect x="1" y="6" width="3" height="3" rx="0.5" fill="currentColor"/>
+        <rect x="6" y="6" width="3" height="3" rx="0.5" fill="currentColor"/>
+        <rect x="11" y="6" width="3" height="3" rx="0.5" fill="currentColor"/>
+        <rect x="1" y="11" width="3" height="3" rx="0.5" fill="currentColor"/>
+        <rect x="6" y="11" width="3" height="3" rx="0.5" fill="currentColor"/>
+        <rect x="11" y="11" width="3" height="3" rx="0.5" fill="currentColor"/>
+      </svg>
+    </button>
+    <!-- Lista -->
+    <button class="toggle-btn" id="viewList" title="Lista" onclick="setView('list')">
+      <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+        <rect x="1" y="2" width="13" height="2.5" rx="1" fill="currentColor"/>
+        <rect x="1" y="6.5" width="13" height="2.5" rx="1" fill="currentColor"/>
+        <rect x="1" y="11" width="13" height="2.5" rx="1" fill="currentColor"/>
+      </svg>
+    </button>
+  </div>
+
+  <span class="count-info" id="countInfo"></span>
 </div>
 
-<div class="filters-bar" id="filtersBar">
-  <span class="filter-label">filtrar:</span>
-  <button class="filter-chip active" data-cat="all" onclick="setFilter('all', this)">Todas</button>
-</div>
-
-<div class="count-badge" id="countBadge"></div>
-<div class="grid-container" id="grid">
+<div class="main" id="main">
   <div class="loading"><div class="spinner"></div></div>
 </div>
 
-<!-- MODAL NOVO/EDITAR -->
+<!-- MODAL -->
 <div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
   <div class="modal">
     <button class="btn-close-modal" onclick="closeModal()">✕</button>
     <h2 id="modalTitle">Nova <span>Referência</span></h2>
     <p class="modal-subtitle" id="modalSubtitle">Adicione um link, vídeo, artigo ou qualquer referência.</p>
-
     <div class="form-group">
       <label>Título *</label>
       <input type="text" id="fTitulo" placeholder="Ex: Referência Match Cut — Estilo Adidas" />
     </div>
-
     <div class="form-row">
       <div class="form-group">
         <label>Tipo</label>
@@ -326,41 +238,33 @@
           <option value="📄 Artigo">📄 Artigo</option>
           <option value="📚 Livro">📚 Livro</option>
           <option value="🔗 Link">🔗 Link</option>
-          <option value="🛠 Ferramenta">🛠 Ferramenta</option>
-          <option value="🎙 Podcast">🎙 Podcast</option>
+          <option value="🛠️ Ferramenta">🛠️ Ferramenta</option>
+          <option value="🎙️ Podcast">🎙️ Podcast</option>
           <option value="📊 Relatório">📊 Relatório</option>
         </select>
       </div>
       <div class="form-group">
         <label>Categoria</label>
-        <select id="fCategoria">
-          <option value="">Selecionar...</option>
-        </select>
+        <select id="fCategoria"><option value="">Selecionar...</option></select>
       </div>
     </div>
-
     <div class="form-group">
       <label>URL</label>
       <input type="url" id="fURL" placeholder="https://..." />
     </div>
-
     <div class="form-group">
       <label>Descrição</label>
       <textarea id="fDescricao" placeholder="O que chamou atenção nessa referência..."></textarea>
     </div>
-
     <div class="form-group">
       <label>Imagem de prévia</label>
-      <div class="image-upload-area" id="uploadArea">
+      <div class="image-upload-area">
         <input type="file" accept="image/*" id="fImagem" onchange="previewImage(event)" />
-        <svg class="upload-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
-          <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" style="color:var(--text3)"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <p>Clique para fazer upload de uma print</p>
       </div>
       <img class="image-preview-modal" id="imgPreview" />
     </div>
-
     <div class="modal-actions">
       <button class="btn-delete" id="btnDelete" onclick="deletarReferencia()" style="display:none">Excluir</button>
       <div class="modal-actions-right">
@@ -372,341 +276,291 @@
 </div>
 
 <div class="toast" id="toast"></div>
-
-<!-- Hidden file input for card image change -->
 <input type="file" accept="image/*" id="cardImageInput" style="display:none" onchange="uploadCardImage(event)" />
 
 <script>
-  const SUPABASE_URL = 'https://jzaeywnwjnbrjddyqlvt.supabase.co';
-  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp6YWV5d253am5icmpkZHlxbHZ0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk0NTk3NzgsImV4cCI6MjA5NTAzNTc3OH0.aeNdHkSp_C0I-WrpvInRCHCaGYsNJcqLHOqOWKvu4sQ';
-  const TABLE = 'referencias';
-  const BUCKET = 'referencias-imagens';
+const SUPABASE_URL = 'https://jzaeywnwjnbrjddyqlvt.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp6YWV5d253am5icmpkZHlxbHZ0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk0NTk3NzgsImV4cCI6MjA5NTAzNTc3OH0.aeNdHkSp_C0I-WrpvInRCHCaGYsNJcqLHOqOWKvu4sQ';
+const TABLE = 'referencias';
+const BUCKET = 'referencias-imagens';
 
-  const CATEGORIAS = [
-    'IA / Automação','Produto','Design Gráfico','Ux/Ui',
-    'Ideias Video','Edição','Adobe Photoshop','Adobe After Effects',
-    'Adobe Premiere','Adobe Illustrator','Prompts Imagens','Prompts Vídeo'
-  ];
+const CATEGORIAS = ['IA / Automação','Produto','Design Gráfico','Ux/Ui','Ideias Video','Edição','Adobe Photoshop','Adobe After Effects','Adobe Premiere','Adobe Illustrator','Prompts Imagens','Prompts Vídeo'];
 
-  let allRefs = [];
-  let activeFilter = 'all';
-  let editingId = null;
-  let pendingImageFile = null;
-  let cardImageTargetId = null;
+let allRefs = [];
+let currentView = localStorage.getItem('refView') || 'category';
+let editingId = null;
+let pendingImageFile = null;
+let cardImageTargetId = null;
 
-  async function api(path, opts = {}) {
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
-      headers: {
-        'apikey': SUPABASE_KEY,
-        'Authorization': `Bearer ${SUPABASE_KEY}`,
-        'Content-Type': 'application/json',
-        'Prefer': 'return=representation',
-        ...opts.headers
-      },
-      ...opts
+// ── API ────────────────────────────────────────────────
+async function api(path, opts = {}) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
+    headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=representation', ...opts.headers },
+    ...opts
+  });
+  if (!res.ok) throw new Error(await res.text());
+  const t = await res.text();
+  return t ? JSON.parse(t) : null;
+}
+
+async function uploadImage(file, id) {
+  const ext = file.name.split('.').pop();
+  const path = `${id}.${ext}`;
+  const res = await fetch(`${SUPABASE_URL}/storage/v1/object/${BUCKET}/${path}`, {
+    method: 'POST',
+    headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': file.type, 'x-upsert': 'true' },
+    body: file
+  });
+  if (!res.ok) throw new Error('Erro no upload');
+  return `${SUPABASE_URL}/storage/v1/object/public/${BUCKET}/${path}`;
+}
+
+// ── CARREGAR ───────────────────────────────────────────
+async function carregarRefs() {
+  try {
+    allRefs = await api(`${TABLE}?select=*&order=created_at.desc`) || [];
+    buildCategoriaSelect();
+    renderAll();
+  } catch (e) {
+    document.getElementById('main').innerHTML = `<div class="empty-main"><p>Erro ao carregar</p><span>${e.message}</span></div>`;
+  }
+}
+
+function buildCategoriaSelect() {
+  const sel = document.getElementById('fCategoria');
+  sel.innerHTML = '<option value="">Selecionar...</option>' + CATEGORIAS.map(c => `<option value="${c}">${c}</option>`).join('');
+}
+
+// ── VIEW ───────────────────────────────────────────────
+function setView(v) {
+  currentView = v;
+  localStorage.setItem('refView', v);
+  document.getElementById('viewCat').classList.toggle('active', v === 'category');
+  document.getElementById('viewCompact').classList.toggle('active', v === 'compact');
+  document.getElementById('viewList').classList.toggle('active', v === 'list');
+  renderAll();
+}
+
+// ── RENDER ─────────────────────────────────────────────
+function renderAll() {
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  let refs = allRefs;
+  if (q) refs = refs.filter(r => (r.titulo||'').toLowerCase().includes(q) || (r.descricao||'').toLowerCase().includes(q) || (r.categoria||'').toLowerCase().includes(q));
+
+  document.getElementById('countInfo').innerHTML = `<strong>${refs.length}</strong> referência${refs.length !== 1 ? 's' : ''}`;
+
+  const main = document.getElementById('main');
+  main.className = currentView === 'list' ? 'main list-view' : currentView === 'compact' ? 'main compact-view' : 'main';
+
+  if (!refs.length) {
+    main.innerHTML = `<div class="empty-main"><p>Nenhuma referência encontrada</p><span>Tente outro termo ou adicione uma nova</span></div>`;
+    return;
+  }
+
+  if (currentView === 'category') {
+    renderByCategory(refs, main);
+  } else {
+    renderFlat(refs, main);
+  }
+}
+
+function renderByCategory(refs, container) {
+  const cats = [...new Set(refs.map(r => r.categoria || 'Sem categoria'))].sort();
+  let html = '';
+  cats.forEach(cat => {
+    const items = refs.filter(r => (r.categoria || 'Sem categoria') === cat);
+    html += `<div class="category-section">
+      <div class="category-header">
+        <span class="category-title">${cat}</span>
+        <span class="category-count">${items.length} item${items.length !== 1 ? 's' : ''}</span>
+      </div>
+      <div class="cards-grid">${items.map((r,i) => cardHTML(r, i)).join('')}</div>
+    </div>`;
+  });
+  container.innerHTML = html;
+}
+
+function renderFlat(refs, container) {
+  container.innerHTML = `<div class="cards-grid">${refs.map((r,i) => cardHTML(r,i)).join('')}</div>`;
+}
+
+function cardHTML(r, i) {
+  const imgSection = r.imagem_url
+    ? `<div class="card-image-wrap">
+        <img src="${r.imagem_url}" alt="${r.titulo}" loading="lazy" />
+        <div class="card-image-change" onclick="triggerCardImageUpload('${r.id}')">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Trocar
+        </div>
+      </div>`
+    : `<div class="card-image-placeholder" onclick="triggerCardImageUpload('${r.id}')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Adicionar imagem
+      </div>`;
+
+  return `<div class="card" style="animation-delay:${Math.min(i,12)*0.03}s">
+    ${imgSection}
+    <div class="card-body">
+      <div class="card-top">
+        <span class="card-tipo">${r.tipo || '🔗 Link'}</span>
+        ${currentView !== 'category' && r.categoria ? `<span class="card-cat-badge">${r.categoria}</span>` : ''}
+      </div>
+      <div class="card-title">${r.titulo || 'Sem título'}</div>
+      ${r.descricao ? `<div class="card-desc">${r.descricao}</div>` : ''}
+      <div class="card-footer">
+        <button class="btn-edit" onclick="openEditModal('${r.id}')">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Editar
+        </button>
+        ${r.url ? `<a class="card-link" href="${r.url}" target="_blank" rel="noopener">
+          <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M1 10L10 1M10 1H4M10 1v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Ver link
+        </a>` : ''}
+      </div>
+    </div>
+  </div>`;
+}
+
+// ── MODAL ──────────────────────────────────────────────
+function openModal() {
+  editingId = null; pendingImageFile = null;
+  document.getElementById('modalTitle').innerHTML = 'Nova <span>Referência</span>';
+  document.getElementById('modalSubtitle').textContent = 'Adicione um link, vídeo, artigo ou qualquer referência.';
+  document.getElementById('fTitulo').value = '';
+  document.getElementById('fURL').value = '';
+  document.getElementById('fDescricao').value = '';
+  document.getElementById('fTipo').value = '🎥 Vídeo';
+  document.getElementById('fCategoria').value = '';
+  document.getElementById('fImagem').value = '';
+  document.getElementById('imgPreview').style.display = 'none';
+  document.getElementById('btnDelete').style.display = 'none';
+  document.getElementById('btnSave').textContent = 'Salvar';
+  document.getElementById('modalOverlay').classList.add('open');
+  setTimeout(() => document.getElementById('fTitulo').focus(), 100);
+}
+
+function openEditModal(id) {
+  const r = allRefs.find(x => x.id === id);
+  if (!r) return;
+  editingId = id; pendingImageFile = null;
+  document.getElementById('modalTitle').innerHTML = 'Editar <span>Referência</span>';
+  document.getElementById('modalSubtitle').textContent = 'Atualize as informações desta referência.';
+  document.getElementById('fTitulo').value = r.titulo || '';
+  document.getElementById('fURL').value = r.url || '';
+  document.getElementById('fDescricao').value = r.descricao || '';
+  document.getElementById('fTipo').value = r.tipo || '🎥 Vídeo';
+  document.getElementById('fCategoria').value = r.categoria || '';
+  document.getElementById('fImagem').value = '';
+  const prev = document.getElementById('imgPreview');
+  if (r.imagem_url) { prev.src = r.imagem_url; prev.style.display = 'block'; } else { prev.style.display = 'none'; }
+  document.getElementById('btnDelete').style.display = 'block';
+  document.getElementById('btnSave').textContent = 'Atualizar';
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  editingId = null; pendingImageFile = null;
+}
+
+function handleOverlayClick(e) { if (e.target === document.getElementById('modalOverlay')) closeModal(); }
+
+function previewImage(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  pendingImageFile = file;
+  const reader = new FileReader();
+  reader.onload = e => { const img = document.getElementById('imgPreview'); img.src = e.target.result; img.style.display = 'block'; };
+  reader.readAsDataURL(file);
+}
+
+function triggerCardImageUpload(id) { cardImageTargetId = id; document.getElementById('cardImageInput').click(); }
+
+async function uploadCardImage(event) {
+  const file = event.target.files[0];
+  if (!file || !cardImageTargetId) return;
+  try {
+    showToast('Enviando imagem...');
+    const url = await uploadImage(file, cardImageTargetId);
+    await api(`${TABLE}?id=eq.${cardImageTargetId}`, { method: 'PATCH', body: JSON.stringify({ imagem_url: url }) });
+    const idx = allRefs.findIndex(r => r.id === cardImageTargetId);
+    if (idx > -1) allRefs[idx].imagem_url = url;
+    renderAll();
+    showToast('✓ Imagem adicionada!');
+  } catch (e) { showToast('Erro no upload.'); console.error(e); }
+  event.target.value = ''; cardImageTargetId = null;
+}
+
+// ── SALVAR ─────────────────────────────────────────────
+async function salvarReferencia() {
+  const titulo = document.getElementById('fTitulo').value.trim();
+  if (!titulo) { showToast('Preencha o título'); return; }
+  const btn = document.getElementById('btnSave');
+  btn.disabled = true; btn.textContent = 'Salvando...';
+  try {
+    const payload = {
+      titulo,
+      tipo: document.getElementById('fTipo').value,
+      categoria: document.getElementById('fCategoria').value || null,
+      url: document.getElementById('fURL').value.trim() || null,
+      descricao: document.getElementById('fDescricao').value.trim() || null,
+    };
+    let savedId = editingId;
+    if (editingId) {
+      await api(`${TABLE}?id=eq.${editingId}`, { method: 'PATCH', body: JSON.stringify(payload) });
+      const idx = allRefs.findIndex(r => r.id === editingId);
+      if (idx > -1) allRefs[idx] = { ...allRefs[idx], ...payload };
+    } else {
+      const data = await api(TABLE, { method: 'POST', body: JSON.stringify(payload) });
+      const created = Array.isArray(data) ? data[0] : data;
+      savedId = created.id;
+      allRefs.unshift(created);
+    }
+    if (pendingImageFile && savedId) {
+      const imgUrl = await uploadImage(pendingImageFile, savedId);
+      await api(`${TABLE}?id=eq.${savedId}`, { method: 'PATCH', body: JSON.stringify({ imagem_url: imgUrl }) });
+      const idx = allRefs.findIndex(r => r.id === savedId);
+      if (idx > -1) allRefs[idx].imagem_url = imgUrl;
+    }
+    renderAll();
+    closeModal();
+    showToast(editingId ? '✓ Atualizado!' : '✓ Adicionado!');
+  } catch (e) { showToast('Erro ao salvar.'); console.error(e); }
+  finally { btn.disabled = false; btn.textContent = editingId ? 'Atualizar' : 'Salvar'; }
+}
+
+// ── DELETAR ────────────────────────────────────────────
+async function deletarReferencia() {
+  if (!editingId) return;
+  if (!confirm('Tem certeza que quer excluir esta referência?')) return;
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/${TABLE}?id=eq.${editingId}`, {
+      method: 'DELETE',
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json' }
     });
     if (!res.ok) throw new Error(await res.text());
-    const text = await res.text();
-    return text ? JSON.parse(text) : null;
-  }
+    allRefs = allRefs.filter(r => r.id !== editingId);
+    renderAll();
+    closeModal();
+    showToast('Referência excluída.');
+  } catch (e) { showToast('Erro ao excluir: ' + e.message); console.error(e); }
+}
 
-  async function uploadImage(file, id) {
-    const ext = file.name.split('.').pop();
-    const path = `${id}.${ext}`;
-    const res = await fetch(`${SUPABASE_URL}/storage/v1/object/${BUCKET}/${path}`, {
-      method: 'POST',
-      headers: {
-        'apikey': SUPABASE_KEY,
-        'Authorization': `Bearer ${SUPABASE_KEY}`,
-        'Content-Type': file.type,
-        'x-upsert': 'true'
-      },
-      body: file
-    });
-    if (!res.ok) throw new Error('Erro no upload da imagem');
-    return `${SUPABASE_URL}/storage/v1/object/public/${BUCKET}/${path}`;
-  }
+// ── UTILS ──────────────────────────────────────────────
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
 
-  async function carregarRefs() {
-    try {
-      const data = await api(`${TABLE}?select=*&order=created_at.desc`);
-      allRefs = data || [];
-      renderGrid(allRefs);
-      buildFilters(allRefs);
-    } catch (e) {
-      document.getElementById('grid').innerHTML = `<div class="empty-state"><p>Erro ao carregar</p><span>${e.message}</span></div>`;
-    }
-  }
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+  if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); openModal(); }
+});
 
-  function buildFilters(refs) {
-    const cats = [...new Set(refs.map(r => r.categoria).filter(Boolean))].sort();
-    const bar = document.getElementById('filtersBar');
-    bar.innerHTML = `<span class="filter-label">filtrar:</span>
-      <button class="filter-chip ${activeFilter==='all'?'active':''}" onclick="setFilter('all',this)">Todas</button>
-      ${cats.map(c=>`<button class="filter-chip ${activeFilter===c?'active':''}" onclick="setFilter('${c}',this)">${c}</button>`).join('')}`;
-
-    const sel = document.getElementById('fCategoria');
-    sel.innerHTML = '<option value="">Selecionar...</option>' +
-      CATEGORIAS.map(c=>`<option value="${c}">${c}</option>`).join('');
-  }
-
-  function setFilter(cat, btn) {
-    activeFilter = cat;
-    document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));
-    btn.classList.add('active');
-    filterCards();
-  }
-
-  function filterCards() {
-    const q = document.getElementById('searchInput').value.toLowerCase();
-    let filtered = allRefs;
-    if (activeFilter !== 'all') filtered = filtered.filter(r=>r.categoria===activeFilter);
-    if (q) filtered = filtered.filter(r=>
-      (r.titulo||'').toLowerCase().includes(q)||
-      (r.descricao||'').toLowerCase().includes(q)||
-      (r.categoria||'').toLowerCase().includes(q)
-    );
-    renderGrid(filtered);
-  }
-
-  function renderGrid(refs) {
-    const grid = document.getElementById('grid');
-    const badge = document.getElementById('countBadge');
-    badge.innerHTML = `<strong>${refs.length}</strong> referência${refs.length!==1?'s':''}${activeFilter!=='all'?` em <strong>${activeFilter}</strong>`:''}`;
-
-    if (!refs.length) {
-      grid.innerHTML = `<div class="empty-state"><p>Nenhuma referência encontrada</p><span>Tente outro filtro ou adicione uma nova</span></div>`;
-      return;
-    }
-
-    grid.innerHTML = refs.map((r,i)=>`
-      <div class="card" style="animation-delay:${i*0.04}s">
-        ${r.imagem_url
-          ? `<div class="card-image-wrap">
-              <img src="${r.imagem_url}" alt="${r.titulo}" />
-              <div class="card-image-change" onclick="triggerCardImageUpload('${r.id}')">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                Trocar imagem
-              </div>
-            </div>`
-          : `<div class="card-image-placeholder" onclick="triggerCardImageUpload('${r.id}')">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              Adicionar imagem
-            </div>`
-        }
-        <div class="card-body">
-          <div class="card-header">
-            <span class="card-tipo">${r.tipo||'🔗 Link'}</span>
-            ${r.categoria?`<span class="card-categoria">${r.categoria}</span>`:''}
-          </div>
-          <div class="card-title">${r.titulo||'Sem título'}</div>
-          ${r.descricao?`<div class="card-desc">${r.descricao}</div>`:''}
-          <div class="card-footer">
-            <div class="card-actions">
-              <button class="btn-edit" onclick="openEditModal('${r.id}')">
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                Editar
-              </button>
-            </div>
-            ${r.url?`<a class="card-link" href="${r.url}" target="_blank" rel="noopener">
-              <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M1 10L10 1M10 1H4M10 1v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              Ver link
-            </a>`:''}
-          </div>
-        </div>
-      </div>
-    `).join('');
-  }
-
-  // MODAL NOVO
-  function openModal() {
-    editingId = null;
-    pendingImageFile = null;
-    document.getElementById('modalTitle').innerHTML = 'Nova <span>Referência</span>';
-    document.getElementById('modalSubtitle').textContent = 'Adicione um link, vídeo, artigo ou qualquer referência.';
-    document.getElementById('fTitulo').value = '';
-    document.getElementById('fURL').value = '';
-    document.getElementById('fDescricao').value = '';
-    document.getElementById('fTipo').value = '🎥 Vídeo';
-    document.getElementById('fCategoria').value = '';
-    document.getElementById('fImagem').value = '';
-    document.getElementById('imgPreview').style.display = 'none';
-    document.getElementById('btnDelete').style.display = 'none';
-    document.getElementById('btnSave').textContent = 'Salvar';
-    document.getElementById('modalOverlay').classList.add('open');
-    document.getElementById('fTitulo').focus();
-  }
-
-  // MODAL EDITAR
-  function openEditModal(id) {
-    const ref = allRefs.find(r => r.id === id);
-    if (!ref) return;
-    editingId = id;
-    pendingImageFile = null;
-    document.getElementById('modalTitle').innerHTML = 'Editar <span>Referência</span>';
-    document.getElementById('modalSubtitle').textContent = 'Atualize as informações desta referência.';
-    document.getElementById('fTitulo').value = ref.titulo || '';
-    document.getElementById('fURL').value = ref.url || '';
-    document.getElementById('fDescricao').value = ref.descricao || '';
-    document.getElementById('fTipo').value = ref.tipo || '🎥 Vídeo';
-    document.getElementById('fCategoria').value = ref.categoria || '';
-    document.getElementById('fImagem').value = '';
-
-    const preview = document.getElementById('imgPreview');
-    if (ref.imagem_url) {
-      preview.src = ref.imagem_url;
-      preview.style.display = 'block';
-    } else {
-      preview.style.display = 'none';
-    }
-
-    document.getElementById('btnDelete').style.display = 'block';
-    document.getElementById('btnSave').textContent = 'Atualizar';
-    document.getElementById('modalOverlay').classList.add('open');
-  }
-
-  function closeModal() {
-    document.getElementById('modalOverlay').classList.remove('open');
-    editingId = null;
-    pendingImageFile = null;
-  }
-
-  function handleOverlayClick(e) {
-    if (e.target === document.getElementById('modalOverlay')) closeModal();
-  }
-
-  function previewImage(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-    pendingImageFile = file;
-    const reader = new FileReader();
-    reader.onload = e => {
-      const img = document.getElementById('imgPreview');
-      img.src = e.target.result;
-      img.style.display = 'block';
-    };
-    reader.readAsDataURL(file);
-  }
-
-  // Upload de imagem direto do card
-  function triggerCardImageUpload(id) {
-    cardImageTargetId = id;
-    document.getElementById('cardImageInput').click();
-  }
-
-  async function uploadCardImage(event) {
-    const file = event.target.files[0];
-    if (!file || !cardImageTargetId) return;
-    try {
-      showToast('Enviando imagem...');
-      const url = await uploadImage(file, cardImageTargetId);
-      await api(`${TABLE}?id=eq.${cardImageTargetId}`, {
-        method: 'PATCH',
-        body: JSON.stringify({ imagem_url: url })
-      });
-      const idx = allRefs.findIndex(r => r.id === cardImageTargetId);
-      if (idx > -1) allRefs[idx].imagem_url = url;
-      filterCards();
-      showToast('✓ Imagem adicionada!');
-    } catch (e) {
-      showToast('Erro no upload. Verifique o console.');
-      console.error(e);
-    }
-    event.target.value = '';
-    cardImageTargetId = null;
-  }
-
-  async function salvarReferencia() {
-    const titulo = document.getElementById('fTitulo').value.trim();
-    if (!titulo) { showToast('Preencha o título'); return; }
-
-    const btn = document.getElementById('btnSave');
-    btn.disabled = true;
-    btn.textContent = 'Salvando...';
-
-    try {
-      const payload = {
-        titulo,
-        tipo: document.getElementById('fTipo').value,
-        categoria: document.getElementById('fCategoria').value || null,
-        url: document.getElementById('fURL').value.trim() || null,
-        descricao: document.getElementById('fDescricao').value.trim() || null,
-      };
-
-      let savedId = editingId;
-
-      if (editingId) {
-        await api(`${TABLE}?id=eq.${editingId}`, { method: 'PATCH', body: JSON.stringify(payload) });
-        const idx = allRefs.findIndex(r => r.id === editingId);
-        if (idx > -1) allRefs[idx] = { ...allRefs[idx], ...payload };
-      } else {
-        const data = await api(TABLE, { method: 'POST', body: JSON.stringify(payload) });
-        const created = Array.isArray(data) ? data[0] : data;
-        savedId = created.id;
-        allRefs.unshift(created);
-      }
-
-      // Upload imagem se houver
-      if (pendingImageFile && savedId) {
-        const imgUrl = await uploadImage(pendingImageFile, savedId);
-        await api(`${TABLE}?id=eq.${savedId}`, { method: 'PATCH', body: JSON.stringify({ imagem_url: imgUrl }) });
-        const idx = allRefs.findIndex(r => r.id === savedId);
-        if (idx > -1) allRefs[idx].imagem_url = imgUrl;
-      }
-
-      buildFilters(allRefs);
-      filterCards();
-      closeModal();
-      showToast(editingId ? '✓ Referência atualizada!' : '✓ Referência adicionada!');
-    } catch (e) {
-      showToast('Erro ao salvar. Verifique o console.');
-      console.error(e);
-    } finally {
-      btn.disabled = false;
-      btn.textContent = editingId ? 'Atualizar' : 'Salvar';
-    }
-  }
-
-  async function deletarReferencia() {
-    if (!editingId) return;
-    if (!confirm('Tem certeza que quer excluir esta referência?')) return;
-    try {
-      const res = await fetch(`${SUPABASE_URL}/rest/v1/${TABLE}?id=eq.${editingId}`, {
-        method: 'DELETE',
-        headers: {
-          'apikey': SUPABASE_KEY,
-          'Authorization': `Bearer ${SUPABASE_KEY}`,
-          'Content-Type': 'application/json'
-        }
-      });
-      if (!res.ok) {
-        const err = await res.text();
-        throw new Error(err);
-      }
-      allRefs = allRefs.filter(r => r.id !== editingId);
-      buildFilters(allRefs);
-      filterCards();
-      closeModal();
-      showToast('Referência excluída.');
-    } catch (e) {
-      showToast('Erro ao excluir: ' + e.message);
-      console.error('DELETE error:', e);
-    }
-  }
-
-  function showToast(msg) {
-    const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 3000);
-  }
-
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') closeModal();
-    if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); openModal(); }
-  });
-
-  carregarRefs();
+// Aplicar view salva
+setView(currentView);
+carregarRefs();
 </script>
 </body>
 </html>
